@@ -459,7 +459,24 @@ def health_check():
         return {"status": "error", "details": str(e)}, 500
 
 
+##----------KEEP AWAKE---------##
+import threading
+import requests
+import time
 
+def keep_alive():
+    url = "https://your-app-name.onrender.com"  # replace with your actual URL
+    while True:
+        try:
+            requests.get(url)
+            print("Pinged self to stay awake")
+        except Exception as e:
+            print(f"Keep-alive ping failed: {e}")
+        time.sleep(600)  # ping every 10 minutes
+
+# Start the keep-alive thread when the app starts
+thread = threading.Thread(target=keep_alive, daemon=True)
+thread.start()
 
 
 if __name__ == "__main__":
