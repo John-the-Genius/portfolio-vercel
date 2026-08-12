@@ -2,7 +2,7 @@ name: Keep Alive
 
 on:
   schedule:
-    - cron: "*/20 * * * *"  # every 20 minutes
+    - cron: "*/60 * * * *"  # every 120 minutes
 
 
 jobs:
