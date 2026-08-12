@@ -22,7 +22,7 @@ import uuid
 
 app = Flask(__name__, instance_path="/tmp")
 app.config["SECRET_KEY"] = os.environ.get("FLASK_KEY")
-app.config["PROFILE_PICTURE"] = "https://res.cloudinary.com/dciu6ydlb/image/upload/v1786518171/display_picture_culzuj.jpg"
+app.config["PROFILE_PICTURE"] = "https://res.cloudinary.com/dciu6ydlb/image/upload/v1786518170/John_pp_pic_hfzjyz.jpg"
 Bootstrap5(app)
 
 load_dotenv()
