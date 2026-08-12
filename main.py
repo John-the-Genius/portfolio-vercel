@@ -20,8 +20,9 @@ from typing import List
 import uuid
 
 
-app = Flask(__name__, instance_path='/tmp')
-app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
+app = Flask(__name__, instance_path="/tmp")
+app.config["SECRET_KEY"] = os.environ.get("FLASK_KEY")
+app.config["PROFILE_PICTURE"] = "https://res.cloudinary.com/dciu6ydlb/image/upload/v1786518171/display_picture_culzuj.jpg"
 Bootstrap5(app)
 
 load_dotenv()
@@ -177,12 +178,14 @@ def home():
     to_display = all_projects[:3]
 
     return render_template("index.html", projects=to_display, python_badges=python_badges,
-                           pbi_badges=pbi_badges, sql_badges=sql_badges, logged_in=current_user.is_authenticated)
+                           pbi_badges=pbi_badges, sql_badges=sql_badges, logged_in=current_user.is_authenticated,
+                           profile_pic_url = app.config["PROFILE_PICTURE"])
 
 
 @app.route("/resume")
 def resume():
-    return render_template("resume.html", logged_in=current_user.is_authenticated)
+    return render_template("resume.html", logged_in=current_user.is_authenticated,
+                           profile_pic_url = app.config["PROFILE_PICTURE"])
 
 
 @app.route("/about")
@@ -210,7 +213,8 @@ def contact():
 
         return redirect(url_for("contact"))
 
-    return render_template("contact.html", form=contact_form, logged_in=current_user.is_authenticated)
+    return render_template("contact.html", form=contact_form, logged_in=current_user.is_authenticated,
+                           profile_pic_url = app.config["PROFILE_PICTURE"])
 
     # Clear the form field without redirecting which is the cleanest way to clear the form but resubmits on refreshing
     # contact_form.process(formdata=None)
@@ -250,7 +254,8 @@ def create_project():
         db.session.commit()
         return redirect(url_for("projects")) #change it to projects
     print(project_post.errors)
-    return render_template("create_project.html", form=project_post, logged_in=current_user.is_authenticated)
+    return render_template("create_project.html", form=project_post,
+                           logged_in=current_user.is_authenticated, profile_pic_url = app.config["PROFILE_PICTURE"])
 
 
 @app.route("/edit-project/<int:project_id>", methods=["GET", "POST"])
@@ -313,7 +318,8 @@ def edit_project(project_id):
                            form=edit_form,
                            is_edit=True,
                            project=project,
-                           logged_in=current_user.is_authenticated)
+                           logged_in=current_user.is_authenticated,
+                           profile_pic_url = app.config["PROFILE_PICTURE"])
 
 
 @app.route("/projects")
@@ -340,7 +346,8 @@ def projects():
         "all_projects.html",
         all_projects=pagination.items,
         pagination=pagination,
-        logged_in=current_user.is_authenticated
+        logged_in=current_user.is_authenticated,
+        profile_pic_url=app.config["PROFILE_PICTURE"]
     )
 
 
@@ -355,7 +362,8 @@ def show_project(project_id):
     except ValueError:
         # If project in desired format, keep it
         requested_project.formatted_date = requested_project.date
-    return render_template("show_project.html", project=requested_project, logged_in=current_user.is_authenticated)
+    return render_template("show_project.html", project=requested_project,
+                           logged_in=current_user.is_authenticated, profile_pic_url = app.config["PROFILE_PICTURE"])
 
 
 @app.route("/delete/<int:project_id>", methods=["GET", "POST"])
@@ -409,7 +417,8 @@ def register():
         login_user(user)
         return redirect(url_for('home'))
 
-    return render_template("register.html", form=register_form, logged_in=current_user.is_authenticated)
+    return render_template("register.html", form=register_form,
+                           logged_in=current_user.is_authenticated, profile_pic_url = app.config["PROFILE_PICTURE"])
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -429,7 +438,8 @@ def login():
         else:
             login_user(user)
             return redirect(url_for("home"))
-    return render_template("login.html", form=login_form, logged_in=current_user.is_authenticated)
+    return render_template("login.html", form=login_form,
+                           logged_in=current_user.is_authenticated, profile_pic_url = app.config["PROFILE_PICTURE"])
 
 
 @app.route('/logout')
